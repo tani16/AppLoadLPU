@@ -25,33 +25,34 @@ public class LoadMethods {
 		
 		try{
 			BufferedReader reader = TratamientoFicheros.openReaderFile("C:\\COBOL\\"+modulo+"\\"+modulo+"\\"+modulo+".CBL");	
-			//Para cuando todo este listo
+			//Para cuando todo este listo se supone que estara
 			//BufferedReader reader = TratamientoFicheros.openReaderFile(Constantes.RUTA_ORIGEN + "\\" + modulo + ".CBL");
 			linea = reader.readLine();
-			linea.substring(7 ,72);
+			
 			
 			while(linea != null) {
+				linea = linea.substring(7 ,72);
 				
 				if (linea.contains("PROCEDURE DIVISION")) {
 					
 					while (!linea.contains(".")) {
 						linea = linea + reader.readLine().substring(7, 72);
-						linea.trim();
 						
 					}
 					//En este punto ya tiene la línea de procedure al punto entera
 					linea = linea.replaceAll(" +", " ").replace(".", "").replace("PROCEDURE DIVISION", "").replace(" USING ", "");
 					cabecera = Arrays.asList(linea.split(" "));
 					
+					/* Debug
 					for (int i = 0; i < cabecera.size(); i++) {
 						System.out.print(cabecera.get(i) + " ");
 						
 					}
 					System.out.println("\n\n");
+					*/
 					
 				}
 				linea = reader.readLine();
-				if (linea != null) linea = linea.substring(7, 72);
 			}
 			
 			reader.close();
@@ -129,31 +130,29 @@ public class LoadMethods {
 	 */
 	public boolean needRollback() {
 			
-			boolean rollback = false;
+		boolean rollback = false;
 			
-			try {
-				BufferedReader reader = TratamientoFicheros.openReaderFile(Constantes.FILE_RAWDATA);
+		try {
+			BufferedReader reader = TratamientoFicheros.openReaderFile(Constantes.FILE_RAWDATA);
 				
-				String linea;
-				linea = reader.readLine();
-				while (linea != null) {
-					if (linea.contains("Rollback-")) {
-						if (linea.contains("Si")) rollback = true;
-						if (linea.contains("No")) rollback = false;
-						break;
-					}
-					linea = reader.readLine();
+			String linea;
+			linea = reader.readLine();
+			while (linea != null) {
+				if (linea.contains("Rollback-")) {
+					if (linea.contains("Si")) rollback = true;
+					if (linea.contains("No")) rollback = false;
+					break;
 				}
-				reader.close();
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				linea = reader.readLine();
 			}
+			reader.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 			
-			return rollback;
+		return rollback;
 		}
 
 	
@@ -186,6 +185,41 @@ public class LoadMethods {
 		}
 		
 		return copys;
+	}
+	
+	/**
+	 * 
+	 * @return devuelve en un array lo mismo que los cuatro métodos anteriores, para mayor comodidad 
+	 */
+	public ArrayList<String> getProperties() {
+		ArrayList<String> properties = new ArrayList<String>();
+		
+		try {
+			BufferedReader reader = TratamientoFicheros.openReaderFile(Constantes.FILE_RAWDATA);
+			
+			String linea;
+			linea = reader.readLine();
+			
+			while(linea != null) {
+				if (linea.contains("Modulo-")) properties.add(linea.substring(linea.indexOf("-") + 1));
+				if (linea.contains("Entorno-")) properties.add(linea.substring(linea.indexOf("-") + 1));
+				if (linea.contains("Rollback-")) {
+					if (linea.substring(linea.indexOf("-") + 1).equals("Si")) properties.add("true");
+					if (linea.substring(linea.indexOf("-") + 1).equals("No")) properties.add("false");
+				}
+				if (linea.contains("Copy-")) properties.add(linea.substring(linea.indexOf("-") + 1));
+				
+				linea = reader.readLine();
+			}
+			
+			reader.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return properties;
 	}
 
 }
