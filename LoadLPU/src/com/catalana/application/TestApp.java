@@ -19,12 +19,12 @@ public class TestApp {
 		loadMethods.getCabecera("GEN038LC");
 		loadMethods.getCabecera("GEN038LS");
 		
-		/*System.out.println(loadMethods.getModulo());
+		System.out.println(loadMethods.getModulo());
 		System.out.println(loadMethods.getEntorno());
 		System.out.println(loadMethods.needRollback());
 		
 		for (int i = 0; i < (loadMethods.getProperties()).size(); i++) {
 			System.err.println(loadMethods.getProperties().get(i));
-		}*/
+		}
 	}
 }
