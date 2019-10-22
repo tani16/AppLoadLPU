@@ -1,7 +1,7 @@
 package com.catalana.utils;
 
 public class Constantes {
-	private Constantes() {
+	public Constantes() {
 	    throw new IllegalStateException("Utility class");
 	  }
 
@@ -14,6 +14,7 @@ public class Constantes {
 	static final String RUTA_TEMPORAL      	= "C:\\PruebasUnitarias\\Temporal\\";
 	static final String RUTA_ORIGEN        	= "C:\\COBOL\\Origen\\";
 	static final String RUTA_MODIFICADO     = "C:\\COBOL\\Modificado\\";
+	static final String RUTA_COBOL			= "C:\\COBOL\\";
 	
 	//Espacios
 	static final String SPACES_11 = "           ";
