@@ -21,13 +21,12 @@ public class LoadMethods {
 	public List<String> getCabecera(String modulo) {
 		
 		String linea;
-		String[] lineas;
-		String[] lineasBuena = null;
 		List<String> cabecera = new ArrayList<String>();
 		
-		try {
-			BufferedReader reader = TratamientoFicheros.openReaderFile("C:\\COBOL\\"+modulo+"\\"+modulo+"\\"+modulo+".CBL");
-			
+		try{
+			BufferedReader reader = TratamientoFicheros.openReaderFile("C:\\COBOL\\"+modulo+"\\"+modulo+"\\"+modulo+".CBL");	
+			//Para cuando todo este listo
+			//BufferedReader reader = TratamientoFicheros.openReaderFile(Constantes.RUTA_ORIGEN + "\\" + modulo + ".CBL");
 			linea = reader.readLine();
 			linea.substring(7 ,72);
 			
@@ -36,16 +35,17 @@ public class LoadMethods {
 				if (linea.contains("PROCEDURE DIVISION")) {
 					
 					while (!linea.contains(".")) {
-						if (linea != null) linea = linea + reader.readLine().substring(7, 72);
+						linea = linea + reader.readLine().substring(7, 72);
 						linea.trim();
+						
 					}
-					
-					linea = format(linea);
+					//En este punto ya tiene la línea de procedure al punto entera
+					linea = linea.replaceAll(" +", " ").replace(".", "").replace("PROCEDURE DIVISION", "").replace(" USING ", "");
 					cabecera = Arrays.asList(linea.split(" "));
-					//System.out.println(linea + "\n\n\n\n");
 					
 					for (int i = 0; i < cabecera.size(); i++) {
 						System.out.print(cabecera.get(i) + " ");
+						
 					}
 					System.out.println("\n\n");
 					
@@ -54,27 +54,138 @@ public class LoadMethods {
 				if (linea != null) linea = linea.substring(7, 72);
 			}
 			
+			reader.close();
 			
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		
-		
-		
-				
-		
-				
 		return cabecera;
 	}
+	
+	/**
+	 * 
+	 * @return modulo del archivo rawData
+	 */
+	public String getModulo() {
+		
+		String modulo = null;
+		
+		try {
+			BufferedReader reader = TratamientoFicheros.openReaderFile(Constantes.FILE_RAWDATA);
+			
+			String linea;
+			linea = reader.readLine();
+			
+			if (linea.contains("Modulo-")) {
+				modulo = linea.substring(linea.indexOf('-') + 1);
+				
+			}
+			reader.close();
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return modulo;
+	}
+	
+	/**
+	 * 
+	 * @return entorno en el que se llevara a cabo la ejecución
+	 */
+	public String getEntorno() {
+		
+		String entorno = null;
+		
+		try {
+			BufferedReader reader = TratamientoFicheros.openReaderFile(Constantes.FILE_RAWDATA);
+			String linea;
+			linea = reader.readLine();
+			
+			while (linea != null) {
+				if (linea.contains("Entorno-")) {
+					entorno = linea.substring(linea.indexOf('-') + 1);
+					break;
+				}
+				linea = reader.readLine();
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return entorno;
+	}
+	
+	/**
+	 * 
+	 * @return booleano indicando la necesidad de rollback o no
+	 */
+	public boolean needRollback() {
+			
+			boolean rollback = false;
+			
+			try {
+				BufferedReader reader = TratamientoFicheros.openReaderFile(Constantes.FILE_RAWDATA);
+				
+				String linea;
+				linea = reader.readLine();
+				while (linea != null) {
+					if (linea.contains("Rollback-")) {
+						if (linea.contains("Si")) rollback = true;
+						if (linea.contains("No")) rollback = false;
+						break;
+					}
+					linea = reader.readLine();
+				}
+				reader.close();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return rollback;
+		}
 
-	private String format(String linea) {
-		linea = linea.replaceAll(" +", " ").replace(".", "").replace("PROCEDURE DIVISION", "").replace(" USING ", "");
-		return linea;
+	
+	/**
+	 * 
+	 * @return devuelve las copys quese van a usar ne un ArrayList
+	 */
+	public ArrayList<String> getCopys() {
+		
+		ArrayList<String> copys = new ArrayList<String>();
+		
+		try {
+			BufferedReader reader = TratamientoFicheros.openReaderFile(Constantes.FILE_RAWDATA);
+			
+			String linea;
+			linea = reader.readLine();
+			while (linea != null) {
+				if (linea.contains("Copy-")) {
+					copys.add(linea.substring(linea.indexOf('-') + 1));
+				}
+				
+				linea = reader.readLine();
+			}
+			
+			reader.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return copys;
 	}
 
 }
