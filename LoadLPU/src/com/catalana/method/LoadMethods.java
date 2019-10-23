@@ -18,7 +18,7 @@ public class LoadMethods {
 	 * @param modulo - Programa a examinar
 	 * @return áreas de la linkage, para utilizar cuando se escriba el CALL al programa
 	 */
-	public List<String> getCabecera(String modulo) {
+	public static List<String> getCabecera(String modulo) {
 		
 		String linea;
 		List<String> cabecera = new ArrayList<String>();
@@ -70,7 +70,7 @@ public class LoadMethods {
 	 * 
 	 * @return modulo del archivo rawData
 	 */
-	public String getModulo() {
+	public static String getModulo() {
 		
 		String modulo = null;
 		
@@ -99,7 +99,7 @@ public class LoadMethods {
 	 * 
 	 * @return entorno en el que se llevara a cabo la ejecución
 	 */
-	public String getEntorno() {
+	public static String getEntorno() {
 		
 		String entorno = null;
 		
@@ -128,7 +128,7 @@ public class LoadMethods {
 	 * 
 	 * @return booleano indicando la necesidad de rollback o no
 	 */
-	public boolean needRollback() {
+	public static boolean needRollback() {
 			
 		boolean rollback = false;
 			
@@ -160,7 +160,7 @@ public class LoadMethods {
 	 * 
 	 * @return devuelve las copys quese van a usar ne un ArrayList
 	 */
-	public ArrayList<String> getCopys() {
+	public static ArrayList<String> getCopys() {
 		
 		ArrayList<String> copys = new ArrayList<String>();
 		
@@ -191,7 +191,7 @@ public class LoadMethods {
 	 * 
 	 * @return devuelve en un array lo mismo que los cuatro métodos anteriores, para mayor comodidad 
 	 */
-	public ArrayList<String> getProperties() {
+	public static ArrayList<String> getProperties() {
 		ArrayList<String> properties = new ArrayList<String>();
 		
 		try {
