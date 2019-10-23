@@ -5,6 +5,9 @@ import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TratamientoFicheros {
 
@@ -78,4 +81,27 @@ public class TratamientoFicheros {
 		return bufferReader;
 		
 	}
+	
+	public static List<String> getArrayFromFile(String file) throws FileNotFoundException {
+		
+		List<String> archivo = new ArrayList<String>();
+		String linea;
+		BufferedReader reader = openReaderFile(file);
+		
+		try {
+			linea = reader.readLine();
+			while(linea != null) {
+				archivo.add(linea);
+				linea = reader.readLine();
+			}
+			reader.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return archivo;
+	}
+	
+	
 }
