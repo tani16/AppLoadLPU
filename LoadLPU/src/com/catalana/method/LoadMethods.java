@@ -21,45 +21,38 @@ public class LoadMethods {
 	public static List<String> getCabecera(String modulo) {
 		
 		String linea;
+		String lineaBuena = " ";
 		List<String> cabecera = new ArrayList<String>();
 		
 		try{
-			BufferedReader reader = TratamientoFicheros.openReaderFile("C:\\COBOL\\"+modulo+"\\"+modulo+"\\"+modulo+".CBL");	
+			List<String> archivo = TratamientoFicheros.getArrayFromFile("C:\\COBOL\\"+modulo+"\\"+modulo+"\\"+modulo+".CBL");	
 			//Para cuando todo este listo se supone que estara
-			//BufferedReader reader = TratamientoFicheros.openReaderFile(Constantes.RUTA_ORIGEN + "\\" + modulo + ".CBL");
-			linea = reader.readLine();
+			//List<String> archivo = TratamientoFicheros.getArrayFromFile(Constantes.RUTA_ORIGEN + "\\" + modulo + ".CBL");
 			
-			
-			while(linea != null) {
-				linea = linea.substring(7 ,72);
+			for (int i = 0; i < archivo.size(); i++) {
+				linea = archivo.get(i).substring(7 , 72);
 				
 				if (linea.contains("PROCEDURE DIVISION")) {
 					
-					while (!linea.contains(".")) {
-						linea = linea + reader.readLine().substring(7, 72);
+					for (int e = i; e < archivo.size(); e++) {
+						lineaBuena = lineaBuena + archivo.get(e).substring(7 , 72);
+						if (lineaBuena.contains(".")) break;
 						
 					}
-					//En este punto ya tiene la línea de procedure al punto entera
-					linea = linea.replaceAll(" +", " ").replace(".", "").replace("PROCEDURE DIVISION", "").replace(" USING ", "");
-					cabecera = Arrays.asList(linea.split(" "));
+				}
+			}
+			lineaBuena = lineaBuena.replaceAll(" +", " ").replace(".", "").replace("PROCEDURE DIVISION", "").replace(" USING ", "").trim();
+			cabecera = Arrays.asList(lineaBuena.split(" "));
 					
 					/* Debug
 					for (int i = 0; i < cabecera.size(); i++) {
-						System.out.print(cabecera.get(i) + " ");
+						System.out.print(cabecera.get(i) + ", ");
 						
 					}
 					System.out.println("\n\n");
 					*/
-					
-				}
-				linea = reader.readLine();
-			}
-			
-			reader.close();
-			
+								
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
@@ -75,20 +68,11 @@ public class LoadMethods {
 		String modulo = null;
 		
 		try {
-			BufferedReader reader = TratamientoFicheros.openReaderFile(Constantes.FILE_RAWDATA);
-			
-			String linea;
-			linea = reader.readLine();
-			
-			if (linea.contains("Modulo-")) {
-				modulo = linea.substring(linea.indexOf('-') + 1);
-				
-			}
-			reader.close();
+			List<String> archivo = TratamientoFicheros.getArrayFromFile(Constantes.FILE_RAWDATA);
+			String linea = archivo.get(0);
+			modulo = linea.substring(linea.indexOf("-") + 1);
 			
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
@@ -104,20 +88,11 @@ public class LoadMethods {
 		String entorno = null;
 		
 		try {
-			BufferedReader reader = TratamientoFicheros.openReaderFile(Constantes.FILE_RAWDATA);
-			String linea;
-			linea = reader.readLine();
+			List<String> archivo = TratamientoFicheros.getArrayFromFile(Constantes.FILE_RAWDATA);
+			String linea = archivo.get(1);
+			entorno = linea.substring(linea.indexOf("-") + 1);
 			
-			while (linea != null) {
-				if (linea.contains("Entorno-")) {
-					entorno = linea.substring(linea.indexOf('-') + 1);
-					break;
-				}
-				linea = reader.readLine();
-			}
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
@@ -133,22 +108,12 @@ public class LoadMethods {
 		boolean rollback = false;
 			
 		try {
-			BufferedReader reader = TratamientoFicheros.openReaderFile(Constantes.FILE_RAWDATA);
-				
-			String linea;
-			linea = reader.readLine();
-			while (linea != null) {
-				if (linea.contains("Rollback-")) {
-					if (linea.contains("Si")) rollback = true;
-					if (linea.contains("No")) rollback = false;
-					break;
-				}
-				linea = reader.readLine();
-			}
-			reader.close();
+			List<String> archivo = TratamientoFicheros.getArrayFromFile(Constantes.FILE_RAWDATA);
+			String linea = archivo.get(2);
+			
+			if (linea.substring(linea.indexOf("-") + 1).equals("Si")) rollback = true;
+			if (linea.substring(linea.indexOf("-") + 1).equals("No")) rollback = false;
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
 			e.printStackTrace();
 		}
 			
@@ -163,24 +128,18 @@ public class LoadMethods {
 	public static ArrayList<String> getCopys() {
 		
 		ArrayList<String> copys = new ArrayList<String>();
+		String linea;
 		
 		try {
-			BufferedReader reader = TratamientoFicheros.openReaderFile(Constantes.FILE_RAWDATA);
+			List<String> archivo = TratamientoFicheros.getArrayFromFile(Constantes.FILE_RAWDATA);
 			
-			String linea;
-			linea = reader.readLine();
-			while (linea != null) {
+			for (int i = 0; i < archivo.size(); i++) {
+				linea = archivo.get(i);
 				if (linea.contains("Copy-")) {
-					copys.add(linea.substring(linea.indexOf('-') + 1));
+					copys.add(linea.substring(linea.indexOf("-") + 1));
 				}
-				
-				linea = reader.readLine();
 			}
-			
-			reader.close();
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
@@ -195,27 +154,23 @@ public class LoadMethods {
 		ArrayList<String> properties = new ArrayList<String>();
 		
 		try {
-			BufferedReader reader = TratamientoFicheros.openReaderFile(Constantes.FILE_RAWDATA);
+			List<String> archivo = TratamientoFicheros.getArrayFromFile(Constantes.FILE_RAWDATA);
 			
 			String linea;
-			linea = reader.readLine();
 			
-			while(linea != null) {
+			for (int i = 0; i < archivo.size(); i++){
+				linea = archivo.get(i);
 				if (linea.contains("Modulo-")) properties.add(linea.substring(linea.indexOf("-") + 1));
 				if (linea.contains("Entorno-")) properties.add(linea.substring(linea.indexOf("-") + 1));
 				if (linea.contains("Rollback-")) {
 					if (linea.substring(linea.indexOf("-") + 1).equals("Si")) properties.add("true");
 					if (linea.substring(linea.indexOf("-") + 1).equals("No")) properties.add("false");
 				}
-				if (linea.contains("Copy-")) properties.add(linea.substring(linea.indexOf("-") + 1));
 				
-				linea = reader.readLine();
+				if (linea.contains("Copy-")) properties.add(linea.substring(linea.indexOf("-") + 1));
 			}
 			
-			reader.close();
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
