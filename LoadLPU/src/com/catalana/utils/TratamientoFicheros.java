@@ -82,9 +82,9 @@ public class TratamientoFicheros {
 		
 	}
 	
-	public static List<String> getArrayFromFile(String file) throws FileNotFoundException {
+	public static ArrayList<String> getArrayFromFile(String file) throws FileNotFoundException {
 		
-		List<String> archivo = new ArrayList<String>();
+		ArrayList<String> archivo = new ArrayList<String>();
 		String linea;
 		BufferedReader reader = openReaderFile(file);
 		

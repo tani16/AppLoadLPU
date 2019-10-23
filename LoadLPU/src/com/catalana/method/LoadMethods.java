@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import com.catalana.utils.Constantes;
@@ -175,6 +176,88 @@ public class LoadMethods {
 		}
 		
 		return properties;
+	}
+	
+public static List<HashMap<String, String>> getTestCases(ArrayList<String> rawData){
+		
+		ArrayList<HashMap<String, String>> pruebas = new ArrayList<HashMap<String,String>>();
+		HashMap<String,String> test1 = new HashMap<>();
+		HashMap<String,String> test2 = new HashMap<>();
+		HashMap<String,String> test3 = new HashMap<>();
+		HashMap<String,String> test4 = new HashMap<>();
+		HashMap<String,String> test5 = new HashMap<>();
+		HashMap<String,String> test6 = new HashMap<>();
+		HashMap<String,String> test7 = new HashMap<>();
+		HashMap<String,String> test8 = new HashMap<>();
+		HashMap<String,String> test9 = new HashMap<>();
+		HashMap<String,String> test10 = new HashMap<>();
+		
+		boolean activeShearch = false;		
+		String linea;
+		String prueba = "";
+		String[] valores = null;
+		
+		for (int i=0; i < rawData.size(); i++) {
+			linea = rawData.get(i);
+			if(linea.contains("--- Prueba")) {
+				activeShearch = true;
+				prueba = linea.substring(4, 13);
+			}
+			if(linea.contains("----- Next Area:")) {
+				activeShearch = false;
+			}
+			if(activeShearch) {
+				valores = new String[2];
+				valores = linea.split("---");
+				switch (prueba) {
+					case "Prueba 1":					
+						test1.put(valores[0],valores[1]);
+						break;
+					case "Prueba 2":
+						test2.put(valores[0],valores[1]);
+						break;
+					case "Prueba 3":
+						test3.put(valores[0],valores[1]);
+						break;
+					case "Prueba 4":
+						test4.put(valores[0],valores[1]);
+						break;
+					case "Prueba 5":
+						test5.put(valores[0],valores[1]);
+						break;
+					case "Prueba 6":
+						test6.put(valores[0],valores[1]);
+						break;
+					case "Prueba 7":
+						test7.put(valores[0],valores[1]);
+						break;
+					case "Prueba 8":
+						test8.put(valores[0],valores[1]);
+						break;
+					case "Prueba 9":
+						test9.put(valores[0],valores[1]);
+						break;
+					case "Prueba 10":
+						test10.put(valores[0],valores[1]);
+						break;						
+					default:
+						break;
+				}
+			}
+		}
+		
+		pruebas.add(test1);
+		pruebas.add(test2);
+		pruebas.add(test3);
+		pruebas.add(test4);
+		pruebas.add(test5);
+		pruebas.add(test6);
+		pruebas.add(test7);
+		pruebas.add(test8);
+		pruebas.add(test9);
+		pruebas.add(test10);
+
+		return pruebas;		
 	}
 
 }

@@ -9,10 +9,9 @@ public class TestApp {
 
 	public static void main(String[] args) throws ExceptionLPU {
 
-
-		LoadMethods loadMethods = new LoadMethods();
-		String file = "C:\\COBOL\\GEN038AC\\GEN038AC\\GEN038AC.CBL";
-
-		throw new ExceptionLPU("Error", "No se encuentra el fichero","W");
+		String linea = "AGECDEPC-PAG-IND-AGRU OF AGECDEPC-R-PAGOS(3)---agrupag3";
+		String valores[] = linea.split("---");
+		String aux = "--- Prueba 10 ---";
+		String aux2 = aux.substring(4, 13).trim();
 	}
 }
