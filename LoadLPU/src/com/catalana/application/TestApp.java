@@ -1,17 +1,20 @@
 package com.catalana.application;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import com.catalana.method.LoadMethods;
+import com.catalana.utils.Constantes;
 import com.catalana.utils.ExceptionLPU;
 import com.catalana.utils.TratamientoFicheros;
 
 public class TestApp {
 
-	public static void main(String[] args) throws ExceptionLPU {
+	public static void main(String[] args) throws ExceptionLPU, FileNotFoundException {
 
-		String linea = "AGECDEPC-PAG-IND-AGRU OF AGECDEPC-R-PAGOS(3)---agrupag3";
-		String valores[] = linea.split("---");
-		String aux = "--- Prueba 10 ---";
-		String aux2 = aux.substring(4, 13).trim();
+		ArrayList<String> rawData = TratamientoFicheros.getArrayFromFile(Constantes.FILE_RAWDATA);
+		List<HashMap<String, String>> prueba = LoadMethods.getTestCases(rawData);
 	}
 }
