@@ -1,6 +1,7 @@
 package com.catalana.method;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -130,6 +131,7 @@ public class LoadMethods {
 	 *         mayor comodidad
 	 */
 	public static ArrayList<String> getProperties(ArrayList<String> archivo) {
+
 		ArrayList<String> properties = new ArrayList<String>();
 
 		String linea;
@@ -152,6 +154,36 @@ public class LoadMethods {
 		}
 
 		return properties;
+	}
+
+	public static void copiaInicio(BufferedWriter lanzador, String tipo, ArrayList<String> copys) {
+
+		ArrayList<String> archivo = new ArrayList<String>();
+		
+		if (tipo.equals("DESA")) archivo = TratamientoFicheros.getArrayFromFile(Constantes.FILE_LANZADOR_DESA);
+		if (tipo.equals("PRE"))  archivo = TratamientoFicheros.getArrayFromFile(Constantes.FILE_LANZADOR_PRE);
+
+		try {
+
+			for (int i = 0; i < archivo.size(); i++) {
+				if (archivo.get(i).contains("COPY")) {
+					lanzador.write(archivo.get(i).replace("COPY", ""));
+					lanzador.newLine();
+					for (int e = 0; e < copys.size(); e++) {
+						lanzador.write("       " + "COPY " + copys.get(e) + ".");
+						lanzador.newLine();
+					}
+				} else {
+					lanzador.write(archivo.get(i));
+					lanzador.newLine();
+				}
+			}
+			lanzador.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 }

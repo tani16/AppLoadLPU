@@ -13,6 +13,7 @@ public class TestApp {
 	public static void main(String[] args) throws ExceptionLPU {
 		String file = "C:\\COBOL\\GEN038AC\\GEN038AC\\GEN038AC.CBL";
 		ArrayList<String> archivo = TratamientoFicheros.getArrayFromFile(Constantes.FILE_RAWDATA);
+		LoadMethods.copiaInicio(TratamientoFicheros.createLanzador("DESA"), "DESA", LoadMethods.getCopys(archivo));
 
 		// Pruebas varias
 
@@ -29,6 +30,6 @@ public class TestApp {
 
 		// for (int i = 0; i < archivo.size(); i++) System.out.println(archivo.get(i));
 
-		// throw new ExceptionLPU("Error", "No se encuentra el fichero","W");
+		//throw new ExceptionLPU("Error", "No se encuentra el fichero","W");
 	}
 }

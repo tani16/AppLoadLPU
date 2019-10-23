@@ -7,7 +7,7 @@ public class Constantes {
 
 	//Archivos
 	public static final String FILE_LANZADOR_DESA 	= "C:\\PruebasUnitarias\\Temporal\\plantillaDesa.cbl";
-	public static final String FILE_LANZADOR_PRE  	= "C:\\PruebasUnitarias\\Temporal\\plantillaPRE.cbl";
+	public static final String FILE_LANZADOR_PRE  	= "C:\\PruebasUnitarias\\Temporal\\plantillaPre.cbl";
 	public static final String FILE_RAWDATA	   		= "C:\\PruebasUnitarias\\Temporal\\rawData.txt";
 	
 	//Rutas

@@ -29,9 +29,9 @@ public class TratamientoFicheros {
 		String file;
 
 		if (("PRE").equals(tipo)) {
-			file = Constantes.FILE_LANZADOR_DESA;
-		} else {
 			file = Constantes.FILE_LANZADOR_PRE;
+		} else {
+			file = Constantes.FILE_LANZADOR_DESA;
 		}
 
 		return openReaderFile(file);
