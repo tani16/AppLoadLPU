@@ -1,6 +1,7 @@
 package com.catalana.method;
 
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.catalana.modelo.ModelData;
 import com.catalana.utils.Constantes;
 import com.catalana.utils.ExceptionLPU;
 import com.catalana.utils.TratamientoFicheros;
@@ -20,8 +22,9 @@ public class LoadMethods {
 	
 	 /** @param modulo - Programa a examinar
 	 * @return áreas de la linkage, para utilizar cuando se escriba el CALL al programa
+	 * @throws FileNotFoundException 
 	 **/
-	public static List<String> getCabecera(String modulo) throws ExceptionLPU {
+	public static List<String> getCabecera(String modulo) throws ExceptionLPU, FileNotFoundException {
 
 		String linea;
 		String lineaBuena = " ";
@@ -159,32 +162,19 @@ public class LoadMethods {
 	
 	/**
 	 * 
-	 * @return devuelve en un array lo mismo que los cuatro métodos anteriores, para mayor comodidad
+	 * @param archivo archivo en array a leer
+	 * @return objeto ModelData con los campos llenos excepto areas
 	 */
-	public static ArrayList<String> getProperties(ArrayList<String> archivo) {
-
-		ArrayList<String> properties = new ArrayList<>();
-
-		String linea;
-
-		for (int i = 0; i < archivo.size(); i++) {
-			linea = archivo.get(i);
-			if (linea.contains("Modulo-"))
-				properties.add(linea.substring(linea.indexOf("-") + 1));
-			if (linea.contains("Entorno-"))
-				properties.add(linea.substring(linea.indexOf("-") + 1));
-			if (linea.contains("Rollback-")) {
-				if (linea.substring(linea.indexOf("-") + 1).equals("Si"))
-					properties.add("true");
-				if (linea.substring(linea.indexOf("-") + 1).equals("No"))
-					properties.add("false");
-			}
-
-			if (linea.contains("Copy-"))
-				properties.add(linea.substring(linea.indexOf("-") + 1));
-		}
-
-		return properties;
+	public static ModelData getProperties(ArrayList<String> archivo) {
+		
+		ModelData modeldata = new ModelData();
+		
+		modeldata.setModulo(getModulo(archivo));
+		modeldata.setEntorno(getEntorno(archivo));
+		modeldata.setRollback(needRollback(archivo));
+		modeldata.setCopys(getCopys(archivo));
+		
+		return modeldata;
 	}
 	
 	/**
