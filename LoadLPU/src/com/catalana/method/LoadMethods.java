@@ -4,7 +4,6 @@ import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -188,17 +187,20 @@ public class LoadMethods {
 	 * 
 	 * @param archivo archivo en array a leer
 	 * @return objeto ModelData con los campos llenos excepto areas
+	 * @throws ExceptionLPU 
 	 */
-	public static ModelData getProperties(ArrayList<String> archivo) {
+	public static ModelData getProperties(ArrayList<String> archivo) throws ExceptionLPU {
 		
-		ModelData modeldata = new ModelData();
+		ModelData modelData = new ModelData();
 		
-		modeldata.setModulo(getModulo(archivo));
-		modeldata.setEntorno(getEntorno(archivo));
-		modeldata.setRollback(needRollback(archivo));
-		modeldata.setCopys(getCopys(archivo));
+		String modulo = getModulo(archivo);
+		modelData.setModulo(modulo);
+		modelData.setEntorno(getEntorno(archivo));
+		modelData.setRollback(needRollback(archivo));
+		modelData.setCopys(getCopys(archivo));
+		modelData.setAreas(getCabecera(modulo));
 		
-		return modeldata;
+		return modelData;
 	}
 	
 	/**
@@ -289,18 +291,18 @@ public class LoadMethods {
 		}
 	
 	/**
-	 * 
+	 * Escribe los diferentes casos de pruebas en el programa Lanzador.
 	 * @param lanzador
 	 * @param test
-	 * @param modulo
+	 * @param dataModel
 	 * @throws ExceptionLPU
 	 */
-	public static void writeTestCases(BufferedWriter lanzador, HashMap<String, String> test, String modulo) throws ExceptionLPU {
+	public static void writeTestCases(BufferedWriter lanzador, HashMap<String, String> test, ModelData dataModel) throws ExceptionLPU {
 		
 		try {
 			lanzador.write(Constantes.NEW_TEST_COMMENT);
 			lanzador.newLine();
-			writeMoveInLanzador(lanzador, "PROGRAMA", modulo);
+			writeMoveInLanzador(lanzador, "PROGRAMA", dataModel.getModulo());
 		
 			for(Map.Entry<String, String> entry : test.entrySet()) {
 				String key = entry.getKey();
@@ -315,6 +317,13 @@ public class LoadMethods {
 		
 	}
 	
+	/**
+	 * Escribe la sentencia move en dos líneas.
+	 * @param lanzador 
+	 * @param variable - Variable que recibirá el valor.
+	 * @param valor - Valor que se moverá a la variable.
+	 * @throws IOException
+	 */
 	private static void writeMoveInLanzador(BufferedWriter lanzador, String variable, String valor) throws IOException {
 		
 		String lineaAux = Constantes.SPACES_11 + "MOVE '" + valor + "'";
@@ -327,6 +336,13 @@ public class LoadMethods {
 		
 	}
 
+	
+	/**
+	 * Escribe las dós últimas líneas del programa Lanzador.
+	 * @param lanzador
+	 * @param tipo
+	 * @throws ExceptionLPU
+	 */
 	public static void writeFinal(BufferedWriter lanzador, String tipo) throws ExceptionLPU {
 		
 		

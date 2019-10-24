@@ -9,6 +9,7 @@ public class ModelData {
 	boolean rollback;
 	ArrayList<String> copys;
 	ArrayList<String> areas;
+	ArrayList<String> cabeceras;
 	
 	
 	/**
@@ -60,6 +61,14 @@ public class ModelData {
 
 	public void setAreas(ArrayList<String> areas) {
 		this.areas = areas;
+	}
+
+	public ArrayList<String> getCabeceras() {
+		return cabeceras;
+	}
+
+	public void setCabeceras(ArrayList<String> cabeceras) {
+		this.cabeceras = cabeceras;
 	}
 
 	@Override
