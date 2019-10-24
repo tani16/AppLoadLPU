@@ -15,18 +15,18 @@ public class LoadLPU {
 
 		ArrayList<String> rawData = TratamientoFicheros.getArrayFromFile(Constantes.FILE_RAWDATA);
 		String tipo = LoadMethods.getEntorno();
+		String modulo = LoadMethods.getModulo();
 		BufferedWriter lanzador = TratamientoFicheros.createLanzador(tipo);
 		
 		
 		ArrayList<HashMap<String, String>> pruebas = LoadMethods.getTestCases(rawData);
-		String modulo;
 		for(int i = 0; i < pruebas.size(); i++) {
 			LoadMethods.writeTestCases(lanzador, pruebas.get(i), modulo);
 		}
 		
 		LoadMethods.writeFinal(lanzador, tipo);
 		
-		
+		TratamientoFicheros.moveDll(modulo,"After");
 		
 		
 	
