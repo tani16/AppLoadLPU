@@ -107,7 +107,7 @@ public class LoadMethods {
 	
 	/**
 	 * 
-	 * @return devuelve las copys quese van a usar ne un ArrayList
+	 * @return devuelve las copys quese van a usar en un ArrayList
 	 */
 	public static ArrayList<String> getCopys(ArrayList<String> archivo) {
 
@@ -119,9 +119,27 @@ public class LoadMethods {
 			if (linea.contains("Copy-")) {
 				copys.add(linea.substring(linea.indexOf("-") + 1));
 			}
+			if (linea.contains("----- Next Area:")) break;
 		}
 
 		return copys;
+	}
+	
+	public static ArrayList<String> getAreas (ArrayList<String> archivo) {
+		
+		ArrayList<String> areas = new ArrayList<String>();
+		
+		for (int i = 0; i < archivo.size(); i++) {
+			if (archivo.get(i).contains("----- Next Area:")) {
+				areas.add(archivo.get(i).substring(archivo.get(i).indexOf(": ") + 1, archivo.get(i).indexOf(".") + 1));
+				
+			}
+		}
+		
+		return areas;
+		
+		
+		
 	}
 	
 	/**
