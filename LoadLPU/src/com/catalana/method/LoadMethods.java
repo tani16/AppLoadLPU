@@ -21,13 +21,13 @@ public class LoadMethods {
 	 /** @param modulo - Programa a examinar
 	 * @return áreas de la linkage, para utilizar cuando se escriba el CALL al programa
 	 **/
-	public static List<String> getCabecera(String modulo) throws ExceptionLPU {
+	public static ArrayList<String> getCabecera(String modulo) throws ExceptionLPU {
 
 		String linea;
 		String lineaBuena = " ";
-		List<String> cabecera;
+		ArrayList<String> cabecera = new ArrayList<String>();
 
-		List<String> archivo = TratamientoFicheros.getArrayFromFile(Constantes.RUTA_ORIGEN + "\\" + modulo + "//.CBL");
+		List<String> archivo = TratamientoFicheros.getArrayFromFile(Constantes.RUTA_ORIGEN + modulo + "\\" + modulo + ".CBL");
 
 		for (int i = 0; i < archivo.size(); i++) {
 			linea = archivo.get(i).substring(7, 72);
@@ -43,7 +43,13 @@ public class LoadMethods {
 			}
 		}
 		lineaBuena = lineaBuena.replaceAll(" +", " ").replace(".", "").replace("PROCEDURE DIVISION", "").replace(" USING ", "").trim();
-		cabecera = Arrays.asList(lineaBuena.split(" "));
+		String[] aux = lineaBuena.split(" ");
+		
+		for (String area : aux) {
+			cabecera.add(area);
+		}
+				
+		
 
 		/*
 		 * Debug for (int i = 0; i < cabecera.size(); i++) {
