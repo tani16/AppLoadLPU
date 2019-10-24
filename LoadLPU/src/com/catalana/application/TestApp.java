@@ -1,7 +1,6 @@
 package com.catalana.application;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.catalana.method.LoadMethods;
 import com.catalana.utils.Constantes;
@@ -18,18 +17,18 @@ public class TestApp {
 		// Pruebas varias
 
 		// LoadMethods.getCabecera("GEN038AC");
-		//System.out.println(LoadMethods.getModulo(archivo));
-		//System.out.println(LoadMethods.getEntorno(archivo));
-		//System.out.println(LoadMethods.needRollback(archivo));
+		// System.out.println(LoadMethods.getModulo(archivo));
+		// System.out.println(LoadMethods.getEntorno(archivo));
+		// System.out.println(LoadMethods.needRollback(archivo));
 
-		//for (int i = 0; i < (LoadMethods.getCopys(archivo)).size(); i++)
-			//System.err.println(LoadMethods.getCopys(archivo).get(i));
+		// for (int i = 0; i < (LoadMethods.getCopys(archivo)).size(); i++)
+		// System.err.println(LoadMethods.getCopys(archivo).get(i));
 
-		//for (int i = 0; i < (LoadMethods.getProperties(archivo)).size(); i++)
-			//System.err.println(LoadMethods.getProperties(archivo).get(i));
+		// for (int i = 0; i < (LoadMethods.getProperties(archivo)).size(); i++)
+		// System.err.println(LoadMethods.getProperties(archivo).get(i));
 
 		// for (int i = 0; i < archivo.size(); i++) System.out.println(archivo.get(i));
 
-		//throw new ExceptionLPU("Error", "No se encuentra el fichero","W");
+		// throw new ExceptionLPU("Error", "No se encuentra el fichero","W");
 	}
 }
