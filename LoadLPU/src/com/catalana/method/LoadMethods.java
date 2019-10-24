@@ -3,6 +3,7 @@ package com.catalana.method;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,10 +28,11 @@ public class LoadMethods {
 
 		String linea;
 		String lineaBuena = " ";
-		ArrayList<String> cabecera = new ArrayList<String>();;
+		ArrayList<String> cabecera = new ArrayList<String>();
 
-		List<String> archivo = TratamientoFicheros.getArrayFromFile(Constantes.RUTA_ORIGEN + modulo + "\\" + modulo + ".CBL");
-
+		//List<String> archivo = TratamientoFicheros.getArrayFromFile(Constantes.RUTA_ORIGEN + modulo + "\\" + modulo + ".CBL");
+		List<String> archivo = TratamientoFicheros.getArrayFromFile("C:\\COBOL\\Origen\\GEN038AC\\GEN038AC\\GEN038AC.CBL");
+		
 		for (int i = 0; i < archivo.size(); i++) {
 			linea = archivo.get(i).substring(7, 72);
 
@@ -289,6 +291,52 @@ public class LoadMethods {
 	
 			return pruebas;		
 		}
+
+	/**
+	 * Escribe los initialize de las areas
+	 * @param lanzador
+	 * @param areas
+	 * @throws ExceptionLPU 
+	 */
+	public static void writeInitialices (BufferedWriter lanzador, ArrayList<String> areas) throws ExceptionLPU {
+		
+		try {
+			for (int i = 0; i < areas.size(); i++) {
+				lanzador.write(Constantes.SPACES_11 + "INITIALIZE " + areas.get(i));
+				lanzador.newLine();
+			}
+		} catch (IOException e) {
+			throw new ExceptionLPU(Constantes.ERROR, "Se ha producido un error al escribir los initialize en el lanzador", "E");
+		}
+	}
+	
+	/**
+	 * Escribe el call en el lanzador
+	 * @param lanzador
+	 * @param cabeceras
+	 * @throws ExceptionLPU 
+	 */
+	public static void writeCallProgram (BufferedWriter lanzador, ArrayList<String> cabeceras) throws ExceptionLPU {
+		
+		try {
+			
+			lanzador.write(Constantes.SPACES_11 + "CALL PROGRAMA USING " + cabeceras.get(0));
+			lanzador.newLine();
+			for (int i = 1; i < cabeceras.size(); i++) {
+				lanzador.write(Constantes.SPACES_31 + cabeceras.get(i));
+				if (i == cabeceras.size()-1) lanzador.write(".");
+				else lanzador.newLine();
+			}
+		} catch (IOException e) {
+			throw new ExceptionLPU(Constantes.ERROR, "Se ha producido un error al escribir el CALL en el lanzador", "E");
+		}
+		
+	}
+	
+	
+	
+	
+	
 	
 	/**
 	 * Escribe los diferentes casos de pruebas en el programa Lanzador.
@@ -302,6 +350,8 @@ public class LoadMethods {
 		try {
 			lanzador.write(Constantes.NEW_TEST_COMMENT);
 			lanzador.newLine();
+			
+			writeInitialices(lanzador, dataModel.getAreas());
 			writeMoveInLanzador(lanzador, "PROGRAMA", dataModel.getModulo());
 		
 			for(Map.Entry<String, String> entry : test.entrySet()) {
@@ -310,6 +360,8 @@ public class LoadMethods {
 				
 				writeMoveInLanzador(lanzador, key, value);				
 			}
+			
+			writeCallProgram (lanzador, dataModel.getCabeceras());
 			
 		} catch (IOException e) {
 			throw new ExceptionLPU(Constantes.ERROR, "Se ha producido un error al escribir los casos de prueba", "E");
@@ -336,7 +388,6 @@ public class LoadMethods {
 		
 	}
 
-	
 	/**
 	 * Escribe las dós últimas líneas del programa Lanzador.
 	 * @param lanzador
