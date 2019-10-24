@@ -3,6 +3,8 @@ package com.catalana.method;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -158,8 +160,8 @@ public class LoadMethods {
 
 		ArrayList<String> archivo = new ArrayList<>();
 		
-		if (tipo.equals("DESA")) archivo = TratamientoFicheros.getArrayFromFile(Constantes.FILE_LANZADOR_DESA);
-		if (tipo.equals("PRE"))  archivo = TratamientoFicheros.getArrayFromFile(Constantes.FILE_LANZADOR_PRE);
+		if (tipo.equals("DESA")) archivo = TratamientoFicheros.getArrayFromFile(Constantes.FILE_TEMPLATE_DESA);
+		if (tipo.equals("PRE"))  archivo = TratamientoFicheros.getArrayFromFile(Constantes.FILE_TEMPLATE_PRE);
 
 		try {
 
@@ -171,6 +173,10 @@ public class LoadMethods {
 						lanzador.write("       " + "COPY " + copys.get(e) + ".");
 						lanzador.newLine();
 					}
+					lanzador.write(Constantes.COPY_GENRETOR);
+					lanzador.newLine();
+					lanzador.write(Constantes.COPY_GENRETSP);
+					lanzador.newLine();
 				} else {
 					lanzador.write(archivo.get(i));
 					lanzador.newLine();
@@ -302,6 +308,9 @@ public class LoadMethods {
 		try {
 			lanzador.write(Constantes.NEW_TEST_COMMENT);
 			lanzador.newLine();
+			lanzador.write(Constantes.DISPLAY_TEST);
+			lanzador.newLine();
+			
 			writeMoveInLanzador(lanzador, "PROGRAMA", dataModel.getModulo());
 		
 			for(Map.Entry<String, String> entry : test.entrySet()) {
@@ -359,6 +368,23 @@ public class LoadMethods {
 		} catch (IOException e) {
 			throw new ExceptionLPU(Constantes.ERROR, "Se ha producido un error al escribir el final del Lanzador", "E");
 		}
+		
+	}
+
+	public static void moveLanzadorToRecompile(String entorno) throws ExceptionLPU {
+		
+		Path origen;
+		Path destino;
+		
+		if("DESA".equals(entorno)) {
+			origen = FileSystems.getDefault().getPath(Constantes.FILE_LANZADOR_DESA);
+			destino = FileSystems.getDefault().getPath(Constantes.FILE_DEST_DESA);
+		}else {
+			origen = FileSystems.getDefault().getPath(Constantes.FILE_LANZADOR_PRE);
+			destino = FileSystems.getDefault().getPath(Constantes.FILE_DEST_PRE);
+		}
+		
+		TratamientoFicheros.moveFile(origen, destino);
 		
 	}
 

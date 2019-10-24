@@ -34,6 +34,8 @@ public class LoadLPU {
 		
 		TratamientoFicheros.bwClose(lanzador);
 		
+		LoadMethods.moveLanzadorToRecompile(dataModel.getEntorno());
+		
 		TratamientoFicheros.moveDll(dataModel.getModulo(), "Before");
 		
 		
