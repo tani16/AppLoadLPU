@@ -14,7 +14,9 @@ public class TestApp {
 
 	public static void main(String[] args) throws ExceptionLPU, FileNotFoundException {
 
-		ArrayList<String> rawData = TratamientoFicheros.getArrayFromFile(Constantes.FILE_RAWDATA);
-		List<HashMap<String, String>> prueba = LoadMethods.getTestCases(rawData);
+		//ArrayList<String> rawData = TratamientoFicheros.getArrayFromFile(Constantes.FILE_RAWDATA);
+		//List<HashMap<String, String>> prueba = LoadMethods.getTestCases(rawData);
+		
+		System.out.println(LoadMethods.getProperties(TratamientoFicheros.getArrayFromFile(Constantes.FILE_RAWDATA)));
 	}
 }
