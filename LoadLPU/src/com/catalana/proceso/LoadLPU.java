@@ -25,13 +25,16 @@ public class LoadLPU {
 		//Copiamos el inicio, a partir de la plantilla		
 		LoadMethods.copiaInicio(lanzador, entorno, copys);
 		
-		//Extraemos los diferentes casos de prueba del archivo rawData
+		//Extraemos los diferentes casos de prueba del archivo rawData y la cabecera para hacer el CALL
 		ArrayList<HashMap<String, String>> pruebas = LoadMethods.getTestCases(rawData);
+		ArrayList<String> cabecera = (ArrayList<String>) LoadMethods.getCabecera(modulo);
 		for(int i = 0; i < pruebas.size(); i++) {
 			LoadMethods.writeTestCases(lanzador, pruebas.get(i), modulo);
 		}
 		
 		LoadMethods.writeFinal(lanzador, entorno);
+		
+		TratamientoFicheros.bwClose(lanzador);
 		
 		TratamientoFicheros.moveDll(modulo,"After");
 		

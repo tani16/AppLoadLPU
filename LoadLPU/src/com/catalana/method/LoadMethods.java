@@ -150,7 +150,7 @@ public class LoadMethods {
 					lanzador.newLine();
 				}
 			}
-			lanzador.close();
+
 		} catch (IOException e) {
 			throw new ExceptionLPU(Constantes.ERROR, "Se ha producido un error al escribir la plantilla", "E");
 		}
@@ -187,6 +187,11 @@ public class LoadMethods {
 		return properties;
 	}
 	
+	/**
+	 * Clasifica Variable-Valor según el caso de pruebas.
+	 * @param rawData
+	 * @return
+	 */
 	public static ArrayList<HashMap<String, String>> getTestCases(ArrayList<String> rawData){
 			
 			ArrayList<HashMap<String, String>> pruebas = new ArrayList<HashMap<String,String>>();
@@ -269,18 +274,27 @@ public class LoadMethods {
 			return pruebas;		
 		}
 	
+	/**
+	 * 
+	 * @param lanzador
+	 * @param test
+	 * @param modulo
+	 * @throws ExceptionLPU
+	 */
 	public static void writeTestCases(BufferedWriter lanzador, HashMap<String, String> test, String modulo) throws ExceptionLPU {
 		
 		try {
+			lanzador.write(Constantes.NEW_TEST_COMMENT);
+			lanzador.newLine();
 			writeMoveInLanzador(lanzador, "PROGRAMA", modulo);
 		
 			for(Map.Entry<String, String> entry : test.entrySet()) {
 				String key = entry.getKey();
 				String value =  entry.getValue();
 				
-				writeMoveInLanzador(lanzador, key, value);
-				
+				writeMoveInLanzador(lanzador, key, value);				
 			}
+			
 		} catch (IOException e) {
 			throw new ExceptionLPU(Constantes.ERROR, "Se ha producido un error al escribir los casos de prueba", "E");
 		}
@@ -289,11 +303,11 @@ public class LoadMethods {
 	
 	private static void writeMoveInLanzador(BufferedWriter lanzador, String variable, String valor) throws IOException {
 		
-		String lineaAux = Constantes.SPACES_11 + "MOVE " + variable;
+		String lineaAux = Constantes.SPACES_11 + "MOVE '" + valor + "'";
 		lanzador.write(lineaAux);
 		lanzador.newLine();
 		
-		lineaAux = Constantes.SPACES_15 + "TO " + valor;
+		lineaAux = Constantes.SPACES_15 + "TO " + variable;
 		lanzador.write(lineaAux);
 		lanzador.newLine();
 		
