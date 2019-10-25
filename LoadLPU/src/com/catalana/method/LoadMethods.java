@@ -4,8 +4,6 @@ import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
 import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,13 +34,8 @@ public class LoadMethods {
 		String lineaBuena = " ";
 		ArrayList<String> cabecera = new ArrayList<String>();
 
-<<<<<<< HEAD
-		List<String> archivo = TratamientoFicheros.getArrayFromFile(Constantes.RUTA_ORIGEN + modulo + "\\" + modulo + "\\" + modulo + ".CBL");
-		
-=======
 		List<String> archivo = TratamientoFicheros.getArrayFromFile(Constantes.RUTA_ORIGEN + modulo + "\\" + modulo + ".CBL");
-
->>>>>>> branch 'master' of https://github.com/tani16/AppLoadLPU
+		
 		for (int i = 0; i < archivo.size(); i++) {
 			if (archivo.get(i).length() > 72) linea = archivo.get(i).substring(7, 72);
 			else linea = archivo.get(i).substring(0, 72);
@@ -173,8 +166,8 @@ public class LoadMethods {
 
 		ArrayList<String> archivo = new ArrayList<>();
 		
-		if (tipo.equals("DESA")) archivo = TratamientoFicheros.getArrayFromFile(Constantes.FILE_TEMPLATE_DESA);
-		if (tipo.equals("PRE"))  archivo = TratamientoFicheros.getArrayFromFile(Constantes.FILE_TEMPLATE_PRE);
+		if (tipo.equals("DESA")) archivo = TratamientoFicheros.getArrayFromFile(Constantes.FILE_LANZADOR_DESA);
+		if (tipo.equals("PRE"))  archivo = TratamientoFicheros.getArrayFromFile(Constantes.FILE_LANZADOR_PRE);
 
 		try {
 
@@ -186,10 +179,6 @@ public class LoadMethods {
 						lanzador.write("       " + "COPY " + copys.get(e) + ".");
 						lanzador.newLine();
 					}
-					lanzador.write(Constantes.COPY_GENRETOR);
-					lanzador.newLine();
-					lanzador.write(Constantes.COPY_GENRETSP);
-					lanzador.newLine();
 				} else {
 					lanzador.write(archivo.get(i));
 					lanzador.newLine();
@@ -371,9 +360,7 @@ public class LoadMethods {
 		try {
 			lanzador.write(Constantes.NEW_TEST_COMMENT);
 			lanzador.newLine();
-			lanzador.write(Constantes.DISPLAY_TEST);
-			lanzador.newLine();
-						
+			
 			writeInitialices(lanzador, dataModel.getAreas());
 			writeMoveInLanzador(lanzador, "PROGRLPU", dataModel.getModulo());
 		
@@ -436,7 +423,6 @@ public class LoadMethods {
 		
 	}
 
-<<<<<<< HEAD
 	/**
 	 * En el archivo after escribe la string after de parámetro
 	 * @param after string a escribir
@@ -506,23 +492,3 @@ public class LoadMethods {
 
 
 
-=======
-	public static void moveLanzadorToRecompile(String entorno) throws ExceptionLPU {
-		
-		Path origen;
-		Path destino;
-		
-		if("DESA".equals(entorno)) {
-			origen = FileSystems.getDefault().getPath(Constantes.FILE_LANZADOR_DESA);
-			destino = FileSystems.getDefault().getPath(Constantes.FILE_DEST_DESA);
-		}else {
-			origen = FileSystems.getDefault().getPath(Constantes.FILE_LANZADOR_PRE);
-			destino = FileSystems.getDefault().getPath(Constantes.FILE_DEST_PRE);
-		}
-		
-		TratamientoFicheros.moveFile(origen, destino);
-		
-	}
-
-}
->>>>>>> branch 'master' of https://github.com/tani16/AppLoadLPU
