@@ -4,6 +4,8 @@ import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -166,8 +168,8 @@ public class LoadMethods {
 
 		ArrayList<String> archivo = new ArrayList<>();
 		
-		if (tipo.equals("DESA")) archivo = TratamientoFicheros.getArrayFromFile(Constantes.FILE_LANZADOR_DESA);
-		if (tipo.equals("PRE"))  archivo = TratamientoFicheros.getArrayFromFile(Constantes.FILE_LANZADOR_PRE);
+		if (tipo.equals("DESA")) archivo = TratamientoFicheros.getArrayFromFile(Constantes.FILE_TEMPLATE_DESA);
+		if (tipo.equals("PRE"))  archivo = TratamientoFicheros.getArrayFromFile(Constantes.FILE_TEMPLATE_DESA);
 
 		try {
 
@@ -458,6 +460,24 @@ public class LoadMethods {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+	}
+
+	public static void moveLanzadorToRecompile(String entorno) throws ExceptionLPU {
+		
+		Path origen;
+		Path destino;
+		
+		if("DESA".equals(entorno)) {
+			origen = FileSystems.getDefault().getPath(Constantes.FILE_LANZADOR_DESA);
+			destino = FileSystems.getDefault().getPath(Constantes.FILE_DEST_DESA);
+		}else {
+			origen = FileSystems.getDefault().getPath(Constantes.FILE_LANZADOR_PRE);
+			destino = FileSystems.getDefault().getPath(Constantes.FILE_DEST_PRE);
+		}
+		
+		TratamientoFicheros.moveFile(origen, destino);
+		TratamientoFicheros.deteleFile(origen);
 		
 	}
 	
