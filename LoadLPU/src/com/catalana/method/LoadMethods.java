@@ -36,8 +36,7 @@ public class LoadMethods {
 		String lineaBuena = " ";
 		ArrayList<String> cabecera = new ArrayList<String>();
 
-		//List<String> archivo = TratamientoFicheros.getArrayFromFile(Constantes.RUTA_ORIGEN + modulo + "\\" + modulo + ".CBL");
-		List<String> archivo = TratamientoFicheros.getArrayFromFile("C:\\COBOL\\" + modulo + "\\" + modulo + "\\" + modulo + ".CBL");
+		List<String> archivo = TratamientoFicheros.getArrayFromFile(Constantes.RUTA_ORIGEN + modulo + "\\" + modulo + ".CBL");
 		
 		for (int i = 0; i < archivo.size(); i++) {
 			if (archivo.get(i).length() > 72) linea = archivo.get(i).substring(7, 72);
@@ -64,12 +63,12 @@ public class LoadMethods {
 		}
 				
 		
-
+		/*
 		for (int i = 0; i < cabecera.size(); i++) {
 			System.out.print(cabecera.get(i) + ", ");
 		}
 		System.out.println("\n\n");
-
+ 		*/
 
 		return cabecera;
 	}
@@ -179,7 +178,7 @@ public class LoadMethods {
 					lanzador.write(archivo.get(i).replace("COPY", ""));
 					lanzador.newLine();
 					for (int e = 0; e < copys.size(); e++) {
-						lanzador.write("       " + "COPY " + copys.get(e) + ".");
+						lanzador.write(Constantes.SPACES_7 + "COPY " + copys.get(e) + ".");
 						lanzador.newLine();
 					}
 				} else {
@@ -187,6 +186,9 @@ public class LoadMethods {
 					lanzador.newLine();
 				}
 			}
+			lanzador.write(Constantes.COPY_GENRETOR);
+			lanzador.newLine();
+			lanzador.write(Constantes.COPY_GENRETSP);
 
 		} catch (IOException e) {
 			throw new ExceptionLPU(Constantes.ERROR, "Se ha producido un error al escribir la plantilla", "E");
