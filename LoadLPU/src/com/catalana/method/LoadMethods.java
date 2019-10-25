@@ -36,7 +36,8 @@ public class LoadMethods {
 		String lineaBuena = " ";
 		ArrayList<String> cabecera = new ArrayList<String>();
 
-		List<String> archivo = TratamientoFicheros.getArrayFromFile(Constantes.RUTA_ORIGEN + modulo + "\\" + modulo + ".CBL");
+		//List<String> archivo = TratamientoFicheros.getArrayFromFile(Constantes.RUTA_ORIGEN + modulo + "\\" + modulo + ".CBL");
+		List<String> archivo = TratamientoFicheros.getArrayFromFile("C:\\COBOL\\" + modulo + "\\" + modulo + "\\" + modulo + ".CBL");
 		
 		for (int i = 0; i < archivo.size(); i++) {
 			if (archivo.get(i).length() > 72) linea = archivo.get(i).substring(7, 72);
@@ -45,8 +46,9 @@ public class LoadMethods {
 			if (linea.contains("PROCEDURE DIVISION")) {
 
 				for (int e = i; e < archivo.size(); e++) {
-					if (archivo.get(e).length() > 72) lineaBuena = archivo.get(e).substring(7, 72);
+					if (archivo.get(e).length() > 72) lineaBuena = lineaBuena + archivo.get(e).substring(7, 72);
 					else lineaBuena = lineaBuena + archivo.get(e).substring(0, 72);
+					
 					if (lineaBuena.contains(".")) {
 						i = archivo.size() + 1;
 						break;
@@ -63,12 +65,11 @@ public class LoadMethods {
 				
 		
 
-		/*
-		 * Debug for (int i = 0; i < cabecera.size(); i++) {
-		 * System.out.print(cabecera.get(i) + ", ");
-		 * 
-		 * } System.out.println("\n\n");
-		 */
+		for (int i = 0; i < cabecera.size(); i++) {
+			System.out.print(cabecera.get(i) + ", ");
+		}
+		System.out.println("\n\n");
+
 
 		return cabecera;
 	}
@@ -333,7 +334,7 @@ public class LoadMethods {
 			lanzador.newLine();
 			for (int i = 1; i < cabeceras.size(); i++) {
 				lanzador.write(Constantes.SPACES_31 + cabeceras.get(i));
-				if (i == cabeceras.size()-1) {
+				if (i == cabeceras.size() - 1) {
 					lanzador.write(".");
 					lanzador.newLine();
 				}
