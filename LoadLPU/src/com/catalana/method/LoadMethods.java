@@ -2,6 +2,7 @@ package com.catalana.method;
 
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
@@ -25,24 +26,29 @@ public class LoadMethods {
 	 * @throws FileNotFoundException 
 	 **/
 	public static ArrayList<String> getCabecera(String modulo) throws ExceptionLPU {
+		
+		//si empieza por numeros una cosas sino no
+		//puede tener numeros al principio pero no al final
 
 		String linea;
 		String lineaBuena = " ";
 		ArrayList<String> cabecera = new ArrayList<String>();
 
-		//List<String> archivo = TratamientoFicheros.getArrayFromFile(Constantes.RUTA_ORIGEN + modulo + "\\" + modulo + ".CBL");
-		List<String> archivo = TratamientoFicheros.getArrayFromFile("C:\\COBOL\\Origen\\GEN038AC\\GEN038AC\\GEN038AC.CBL");
+		List<String> archivo = TratamientoFicheros.getArrayFromFile(Constantes.RUTA_ORIGEN + modulo + "\\" + modulo + "\\" + modulo + ".CBL");
 		
 		for (int i = 0; i < archivo.size(); i++) {
-			linea = archivo.get(i).substring(7, 72);
+			if (archivo.get(i).length() > 72) linea = archivo.get(i).substring(7, 72);
+			else linea = archivo.get(i).substring(0, 72);
 
 			if (linea.contains("PROCEDURE DIVISION")) {
 
 				for (int e = i; e < archivo.size(); e++) {
-					lineaBuena = lineaBuena + archivo.get(e).substring(7, 72);
-					if (lineaBuena.contains("."))
+					if (archivo.get(e).length() > 72) lineaBuena = archivo.get(e).substring(7, 72);
+					else lineaBuena = lineaBuena + archivo.get(e).substring(0, 72);
+					if (lineaBuena.contains(".")) {
+						i = archivo.size() + 1;
 						break;
-
+					}
 				}
 			}
 		}
@@ -200,7 +206,8 @@ public class LoadMethods {
 		modelData.setEntorno(getEntorno(archivo));
 		modelData.setRollback(needRollback(archivo));
 		modelData.setCopys(getCopys(archivo));
-		modelData.setAreas(getCabecera(modulo));
+		modelData.setCabeceras(getCabecera(modulo));
+		modelData.setAreas(getAreas(archivo));
 		
 		return modelData;
 	}
@@ -320,11 +327,14 @@ public class LoadMethods {
 		
 		try {
 			
-			lanzador.write(Constantes.SPACES_11 + "CALL PROGRAMA USING " + cabeceras.get(0));
+			lanzador.write(Constantes.SPACES_11 + "CALL PROGRLPU USING " + cabeceras.get(0));
 			lanzador.newLine();
 			for (int i = 1; i < cabeceras.size(); i++) {
 				lanzador.write(Constantes.SPACES_31 + cabeceras.get(i));
-				if (i == cabeceras.size()-1) lanzador.write(".");
+				if (i == cabeceras.size()-1) {
+					lanzador.write(".");
+					lanzador.newLine();
+				}
 				else lanzador.newLine();
 			}
 		} catch (IOException e) {
@@ -352,7 +362,7 @@ public class LoadMethods {
 			lanzador.newLine();
 			
 			writeInitialices(lanzador, dataModel.getAreas());
-			writeMoveInLanzador(lanzador, "PROGRAMA", dataModel.getModulo());
+			writeMoveInLanzador(lanzador, "PROGRLPU", dataModel.getModulo());
 		
 			for(Map.Entry<String, String> entry : test.entrySet()) {
 				String key = entry.getKey();
@@ -413,4 +423,72 @@ public class LoadMethods {
 		
 	}
 
+	/**
+	 * En el archivo after escribe la string after de parámetro
+	 * @param after string a escribir
+	 * @param before
+	 * @throws ExceptionLPU 
+	 */
+	public static void addDisplayFail (String after, String before) throws ExceptionLPU {
+		
+		try {
+			
+			BufferedWriter writerAfter = TratamientoFicheros.openWriterFile(Constantes.FILE_TEST_AFTER, true);
+			BufferedWriter writerBefore = TratamientoFicheros.openWriterFile(Constantes.FILE_TEST_BEFORE, true);
+			
+			
+			String[] auxAfter = after.split(Constantes.SPLIT_LINE_KEY);
+			for (String string : auxAfter) {
+				writerAfter.newLine();
+				writerAfter.write(string);
+			}
+			writerAfter.close();
+			
+			
+			String[] auxBefore = before.split(Constantes.SPLIT_LINE_KEY);
+			for (String string : auxBefore) {
+				writerBefore.newLine();
+				writerBefore.write(string);
+			}
+			writerBefore.close();
+			
+		} catch (ExceptionLPU e) {
+			// TODO Auto-generated catch block
+			throw new ExceptionLPU(Constantes.ERROR, "Se ha producido un error al el archivo after", "E");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
