@@ -181,14 +181,16 @@ public class LoadMethods {
 						lanzador.write(Constantes.SPACES_7 + "COPY " + copys.get(e) + ".");
 						lanzador.newLine();
 					}
+					lanzador.write(Constantes.COPY_GENRETOR);
+					lanzador.newLine();
+					lanzador.write(Constantes.COPY_GENRETSP);
+					lanzador.newLine();
 				} else {
 					lanzador.write(archivo.get(i));
 					lanzador.newLine();
 				}
 			}
-			lanzador.write(Constantes.COPY_GENRETOR);
-			lanzador.newLine();
-			lanzador.write(Constantes.COPY_GENRETSP);
+			
 
 		} catch (IOException e) {
 			throw new ExceptionLPU(Constantes.ERROR, "Se ha producido un error al escribir la plantilla", "E");
