@@ -40,13 +40,13 @@ public class LoadMethods {
 		
 		for (int i = 0; i < archivo.size(); i++) {
 			if (archivo.get(i).length() > 72) linea = archivo.get(i).substring(7, 72);
-			else linea = archivo.get(i).substring(0, 72);
+			else linea = archivo.get(i).substring(0, archivo.get(i).length()-1);
 
 			if (linea.contains("PROCEDURE DIVISION")) {
 
 				for (int e = i; e < archivo.size(); e++) {
 					if (archivo.get(e).length() > 72) lineaBuena = lineaBuena + archivo.get(e).substring(7, 72);
-					else lineaBuena = lineaBuena + archivo.get(e).substring(0, 72);
+					else lineaBuena = lineaBuena + archivo.get(e).substring(0, archivo.get(i).length()-1);
 					
 					if (lineaBuena.contains(".")) {
 						i = archivo.size() + 1;
