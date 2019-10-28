@@ -393,15 +393,27 @@ public class LoadMethods {
 	 * @param valor - Valor que se moverá a la variable.
 	 * @throws IOException
 	 */
-	private static void writeMoveInLanzador(BufferedWriter lanzador, String variable, String valor) throws IOException {
+private static void writeMoveInLanzador(BufferedWriter lanzador, String variable, String valor) throws IOException {
 		
 		String lineaAux = Constantes.SPACES_11 + "MOVE '" + valor + "'";
+		String[] aux = new String[2];
 		lanzador.write(lineaAux);
 		lanzador.newLine();
 		
-		lineaAux = Constantes.SPACES_15 + "TO " + variable;
-		lanzador.write(lineaAux);
-		lanzador.newLine();
+		if (variable.contains(" OF ")) {
+			aux = variable.split(" OF ");
+			lineaAux = Constantes.SPACES_15 + "TO " + aux[0];
+			lanzador.write(lineaAux);
+			lanzador.newLine();
+			lineaAux = Constantes.SPACES_18 + "OF " + aux[1];
+			lanzador.write(lineaAux);
+			lanzador.newLine();
+			
+		} else {
+			lineaAux = Constantes.SPACES_15 + "TO " + variable;
+			lanzador.write(lineaAux);
+			lanzador.newLine();
+		}
 		
 	}
 
