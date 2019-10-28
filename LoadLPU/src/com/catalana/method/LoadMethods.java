@@ -40,13 +40,13 @@ public class LoadMethods {
 		
 		for (int i = 0; i < archivo.size(); i++) {
 			if (archivo.get(i).length() > 72) linea = archivo.get(i).substring(7, 72);
-			else linea = archivo.get(i).substring(0, archivo.get(i).length()-1);
+			else linea = archivo.get(i).substring(7, archivo.get(i).length()-1);
 
 			if (linea.contains("PROCEDURE DIVISION")) {
 
 				for (int e = i; e < archivo.size(); e++) {
 					if (archivo.get(e).length() > 72) lineaBuena = lineaBuena + archivo.get(e).substring(7, 72);
-					else lineaBuena = lineaBuena + archivo.get(e).substring(0, archivo.get(i).length()-1);
+					else lineaBuena = lineaBuena + archivo.get(e).substring(7, archivo.get(e).length());
 					
 					if (lineaBuena.contains(".")) {
 						i = archivo.size() + 1;
@@ -63,12 +63,12 @@ public class LoadMethods {
 		}
 				
 		
-		/*
+		
 		for (int i = 0; i < cabecera.size(); i++) {
 			System.out.print(cabecera.get(i) + ", ");
 		}
 		System.out.println("\n\n");
- 		*/
+ 		
 
 		return cabecera;
 	}
@@ -169,7 +169,7 @@ public class LoadMethods {
 		ArrayList<String> archivo = new ArrayList<>();
 		
 		if (tipo.equals("DESA")) archivo = TratamientoFicheros.getArrayFromFile(Constantes.FILE_TEMPLATE_DESA);
-		if (tipo.equals("PRE"))  archivo = TratamientoFicheros.getArrayFromFile(Constantes.FILE_TEMPLATE_DESA);
+		if (tipo.equals("PRE"))  archivo = TratamientoFicheros.getArrayFromFile(Constantes.FILE_TEMPLATE_PRE);
 
 		try {
 
@@ -393,29 +393,29 @@ public class LoadMethods {
 	 * @param valor - Valor que se moverá a la variable.
 	 * @throws IOException
 	 */
-private static void writeMoveInLanzador(BufferedWriter lanzador, String variable, String valor) throws IOException {
-		
-		String lineaAux = Constantes.SPACES_11 + "MOVE '" + valor + "'";
-		String[] aux = new String[2];
-		lanzador.write(lineaAux);
-		lanzador.newLine();
-		
-		if (variable.contains(" OF ")) {
-			aux = variable.split(" OF ");
-			lineaAux = Constantes.SPACES_15 + "TO " + aux[0];
-			lanzador.write(lineaAux);
-			lanzador.newLine();
-			lineaAux = Constantes.SPACES_18 + "OF " + aux[1];
+	private static void writeMoveInLanzador(BufferedWriter lanzador, String variable, String valor) throws IOException {
+			
+			String lineaAux = Constantes.SPACES_11 + "MOVE '" + valor + "'";
+			String[] aux = new String[2];
 			lanzador.write(lineaAux);
 			lanzador.newLine();
 			
-		} else {
-			lineaAux = Constantes.SPACES_15 + "TO " + variable;
-			lanzador.write(lineaAux);
-			lanzador.newLine();
+			if (variable.contains(" OF ")) {
+				aux = variable.split(" OF ");
+				lineaAux = Constantes.SPACES_15 + "TO " + aux[0];
+				lanzador.write(lineaAux);
+				lanzador.newLine();
+				lineaAux = Constantes.SPACES_18 + "OF " + aux[1];
+				lanzador.write(lineaAux);
+				lanzador.newLine();
+				
+			} else {
+				lineaAux = Constantes.SPACES_15 + "TO " + variable;
+				lanzador.write(lineaAux);
+				lanzador.newLine();
+			}
+			
 		}
-		
-	}
 
 	/**
 	 * Escribe las dós últimas líneas del programa Lanzador.
@@ -452,8 +452,8 @@ private static void writeMoveInLanzador(BufferedWriter lanzador, String variable
 		
 		try {
 			
-			BufferedWriter writerAfter = TratamientoFicheros.openWriterFile(Constantes.FILE_TEST_AFTER, true);
-			BufferedWriter writerBefore = TratamientoFicheros.openWriterFile(Constantes.FILE_TEST_BEFORE, true);
+			BufferedWriter writerAfter = TratamientoFicheros.openWriterFile(Constantes.FILE_RESULT_AFTER, true);
+			BufferedWriter writerBefore = TratamientoFicheros.openWriterFile(Constantes.FILE_RESULT_BEFORE, true);
 			
 			
 			String[] auxAfter = after.split(Constantes.SPLIT_LINE_KEY);
