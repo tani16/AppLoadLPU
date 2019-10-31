@@ -380,6 +380,11 @@ public class LoadMethods {
 			
 			writeCallProgram (lanzador, dataModel.getCabeceras());
 			
+			if(dataModel.isRollback()) {
+				lanzador.write(Constantes.ROLLBACK);
+				lanzador.newLine();
+			}
+			
 		} catch (IOException e) {
 			throw new ExceptionLPU(Constantes.ERROR, "Se ha producido un error al escribir los casos de prueba", "E");
 		}
