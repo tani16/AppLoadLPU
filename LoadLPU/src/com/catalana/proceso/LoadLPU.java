@@ -1,6 +1,7 @@
 package com.catalana.proceso;
 
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -27,7 +28,7 @@ public class LoadLPU {
 		//Extraemos los diferentes casos de prueba del archivo rawData y la cabecera para hacer el CALL
 		ArrayList<HashMap<String, String>> pruebas = LoadMethods.getTestCases(rawData);
 		for(int i = 0; i < pruebas.size(); i++) {
-			LoadMethods.writeTestCases(lanzador, pruebas.get(i), dataModel);
+			if (!pruebas.get(i).isEmpty()) LoadMethods.writeTestCases(lanzador, pruebas.get(i), dataModel);
 		}
 		
 		LoadMethods.writeFinal(lanzador, dataModel.getEntorno());
@@ -37,6 +38,8 @@ public class LoadLPU {
 		LoadMethods.moveLanzadorToRecompile(dataModel.getEntorno());
 		
 		TratamientoFicheros.moveDll(dataModel.getModulo(), "Before");
+		
+		new ExceptionLPU("Éxito", "Se ha generado el lanzador con éxito", "W");
 		
 		
 	
