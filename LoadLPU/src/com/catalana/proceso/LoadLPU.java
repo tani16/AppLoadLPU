@@ -28,7 +28,7 @@ public class LoadLPU {
 		//Extraemos los diferentes casos de prueba del archivo rawData y la cabecera para hacer el CALL
 		ArrayList<HashMap<String, String>> pruebas = LoadMethods.getTestCases(rawData);
 		for(int i = 0; i < pruebas.size(); i++) {
-			if (!pruebas.get(i).isEmpty()) LoadMethods.writeTestCases(lanzador, pruebas.get(i), dataModel);
+			if (!pruebas.get(i).isEmpty()) LoadMethods.writeTestCases(lanzador, pruebas.get(i), dataModel, i);
 		}
 		
 		LoadMethods.writeFinal(lanzador, dataModel.getEntorno());

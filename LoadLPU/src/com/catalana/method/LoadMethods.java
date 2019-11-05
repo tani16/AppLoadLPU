@@ -360,13 +360,21 @@ public class LoadMethods {
 	 * @param lanzador
 	 * @param test
 	 * @param dataModel
+	 * @param nPrueba 
 	 * @throws ExceptionLPU
 	 */
-	public static void writeTestCases(BufferedWriter lanzador, HashMap<String, String> test, ModelData dataModel) throws ExceptionLPU {
+	public static void writeTestCases(BufferedWriter lanzador, HashMap<String, String> test, ModelData dataModel, int nPrueba) throws ExceptionLPU {
 		
 		try {
 			lanzador.write(Constantes.NEW_TEST_COMMENT);
 			lanzador.newLine();
+			
+			lanzador.write(Constantes.DISPLAY_NEW_TEST);
+			lanzador.newLine();
+			
+			nPrueba++;
+			lanzador.write(Constantes.DISPLAY_N_TEST + nPrueba + "'.");
+			lanzador.newLine();			
 			
 			writeInitialices(lanzador, dataModel.getAreas());
 			writeMoveInLanzador(lanzador, "PROGRLPU", dataModel.getModulo());
